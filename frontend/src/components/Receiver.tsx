@@ -10,7 +10,8 @@ export const Receiver = () => {
         socket.onmessage = (event) =>{
             const message = JSON.parse(event.data);
             if(message.type === 'createOffer'){
-                //creating an answer
+                const pc = new RTCPeerConnection();
+                pc.setLocalDescription(message.sdp);
             }
         }
     }, [])
