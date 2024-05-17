@@ -14,6 +14,7 @@ export const Receiver = () => {
                 pc.setLocalDescription(message.sdp);
                 const answer = await pc.createAnswer();
                 await pc.setLocalDescription(answer);
+                socket?.send(JSON.stringify({type : 'createAnswer', sdp: pc.localDescription}))
             }
         }
     }, [])
