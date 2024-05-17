@@ -6,6 +6,13 @@ export const Receiver = () => {
         socket.onopen = () => {
             socket.send(JSON.stringify({ type: 'receiver' }))
         }
+
+        socket.onmessage = (event) =>{
+            const message = JSON.parse(event.data);
+            if(message.type === 'createOffer'){
+                //creating an answer
+            }
+        }
     }, [])
     return <div>
 
