@@ -7,11 +7,13 @@ export const Receiver = () => {
             socket.send(JSON.stringify({ type: 'receiver' }))
         }
 
-        socket.onmessage = (event) =>{
+        socket.onmessage = async(event) =>{
             const message = JSON.parse(event.data);
             if(message.type === 'createOffer'){
                 const pc = new RTCPeerConnection();
                 pc.setLocalDescription(message.sdp);
+                const answer = await pc.createAnswer();
+                await pc.setLocalDescription(answer);
             }
         }
     }, [])
