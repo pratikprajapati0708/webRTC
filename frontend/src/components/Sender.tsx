@@ -10,10 +10,18 @@ export const Sender = ()=>{
         setSocket(socket);
     },[])
     async function startSendingVideo(){
+        if(!socket)return;
         const pc = new RTCPeerConnection();
         const offer = await pc.createOffer();
         pc.setLocalDescription(offer);
-        socket?.send(JSON.stringify({type : 'createOffer', sdp : pc.localDescription }))
+        socket?.send(JSON.stringify({type : 'createOffer', sdp : pc.localDescription }));
+
+        socket.onmessage =(event)=>{
+            const message = JSON.parse(event.data);
+            if(message.type === 'createOffer'){
+                pc.setRemoteDescription(message.sdp);
+            }
+        }
     }
 
     return <div>
