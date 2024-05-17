@@ -7,6 +7,7 @@ export const Sender = ()=>{
         socket.onopen = ()=>{
             socket.send(JSON.stringify({type : 'sender'}))
         }
+        setSocket(socket);
     },[])
     async function startSendingVideo(){
         const pc = new RTCPeerConnection();
