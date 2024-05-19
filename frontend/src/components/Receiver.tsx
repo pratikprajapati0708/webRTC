@@ -9,6 +9,7 @@ export const Receiver = () => {
 
         socket.onmessage = async(event) =>{
             const message = JSON.parse(event.data);
+            const pc : RTCPeerConnection | null = null;
             if(message.type === 'createOffer'){
                 const pc = new RTCPeerConnection();
                 pc.setLocalDescription(message.sdp);
@@ -21,6 +22,11 @@ export const Receiver = () => {
                 const answer = await pc.createAnswer();
                 await pc.setLocalDescription(answer);
                 socket?.send(JSON.stringify({type : 'createAnswer', sdp: pc.localDescription}))
+            }else if (message.type === 'iceCandidate'){
+                if(pc != null){
+                    //@ts-ignore
+                    pc.addIceCandidate(message.candidate);
+                }
             }
         }
     }, [])
