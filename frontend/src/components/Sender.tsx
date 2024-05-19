@@ -28,6 +28,9 @@ export const Sender = ()=>{
             if(message.type === 'createOffer'){
                 pc.setRemoteDescription(message.sdp);
             }
+            else if (message.type === 'iceCandidate'){
+                pc.addIceCandidate(message.candidate);
+            }
         }
     }
 
