@@ -36,6 +36,7 @@ export const Sender = ()=>{
                 pc.addIceCandidate(message.candidate);
             }
         }
+        const stream = await navigator.mediaDevices.getUserMedia({video: true,audio : false});
     }
 
     return <div>
