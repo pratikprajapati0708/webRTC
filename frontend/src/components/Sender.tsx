@@ -12,8 +12,12 @@ export const Sender = ()=>{
     async function startSendingVideo(){
         if(!socket)return;
         const pc = new RTCPeerConnection();
-        const offer = await pc.createOffer();
-        pc.setLocalDescription(offer);
+        pc.onnegotiationneeded = async() =>{
+            console.log("onnegotiateneeded")
+            const offer = await pc.createOffer();
+            pc.setLocalDescription(offer);
+        }
+
         pc.onicecandidate = (event) =>{
             console.log(event);
             if(event?.candidate){
