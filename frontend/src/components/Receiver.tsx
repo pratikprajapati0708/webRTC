@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export const Receiver = () => {
+    const videoRef = useRef<HTMLVideoElement>(null);
     useEffect(() => {
         const socket = new WebSocket("ws://localhost:8080");
         socket.onopen = () => {
@@ -19,8 +20,11 @@ export const Receiver = () => {
                         socket.send(JSON.stringify({type : 'iceCandidate',candidate : event.candidate}))
                     }
                 }
-                pc.ontrack = (track) =>{
-                    console.log(track);
+                pc.ontrack = (event) =>{
+                    console.log(event);
+                    if(videoRef.current){
+                        videoRef.current.srcObject = new MediaStream([event.track]);
+                    }
                 }
 
                 const answer = await pc.createAnswer();
@@ -35,6 +39,7 @@ export const Receiver = () => {
         }
     }, [])
     return <div>
-
+        Receiver
+        <video ref={videoRef}></video>
     </div>
 }
